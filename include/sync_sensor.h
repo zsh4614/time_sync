@@ -1,20 +1,12 @@
 #ifndef SYNC_SENSOR_H_
 #define SYNC_SENSOR_H_
 
-#include <map>
 #include "any.h"
-#include "pose.h"
-#include "point_cloud.h"
 
 enum class SyncSensorType {
     LIDAR = 0,
     POSE = 1,
     ANY = 2,
-};
-
-const std::map<SyncSensorType, const char*> kSyncSensorType2TypeIdNameMap = {
-    {SyncSensorType::LIDAR, typeid(PointCloud::Ptr).name()},
-    {SyncSensorType::POSE, typeid(Pose::Ptr).name()},
 };
 
 class SyncSensor {
@@ -23,11 +15,6 @@ public:
 
     template <typename T>
     SyncSensor(const SyncSensorType& type, const T& any) {
-        if (type != SyncSensorType::ANY) {
-            if (kSyncSensorType2TypeIdNameMap.at(type) != typeid(any).name()) {
-                throw "Construct value not fit SynSensorType!";
-            }
-        }
         type_ = type;
         msg_ptr_.reset(new Any(any));
     }

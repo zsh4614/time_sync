@@ -9,11 +9,12 @@
 #include <thread>
 #include <mutex>
 #include <condition_variable>
+#include <iostream>
 #include "sync_sensor.h"
 
 class SynchronizerOptions {
 public:
-    unsigned int queue_size_ = 10;
+    unsigned int queue_size_ = 100;  // 注意这里是缓存队列的最大长度，尽量大一些，否则频率高的可能会被挤出导致无法同步上
     std::vector<std::string> frame_id_vec_;
     double max_interval_duration_ = std::numeric_limits<double>::max();
 };
@@ -74,15 +75,15 @@ private:
     SynchronizerOptions options_;
     std::unique_ptr<std::thread> thread_ptr_;
     std::mutex mutex_;
-    std::condition_variable condition_;
+    std::condition_variable cv_;
     bool run_flag_ = false;
     std::deque<SyncSensor::Ptr> msg_deque_;
     std::vector<std::function<void(const std::vector<SyncSensor::Ptr> &msg_ptr_vec)>> sync_cb_list_;
     uint32_t queue_size_;
-    std::map<std::string, std::deque<Synchronizer::Ptr>> sensor_msg_map_;
-    std::map<std::string, std::vector<Synchronizer::Ptr>> sensor_msg_past_;
+    std::map<std::string, std::deque<SyncSensor::Ptr>> sensor_msg_map_;
+    std::map<std::string, std::vector<SyncSensor::Ptr>> sensor_msg_past_;
     std::map<std::string, bool> has_dropped_messages_;
-    std::map<std::string, double> inter_message_lower_bounds_;
+    std::map<std::string, double> inter_message_lower_bounds_;  // 每个传感器消息队列的最小间隔时间
     uint32_t num_non_empty_deques_;
     std::string pivot_;
     const std::string NO_PIVOT = "_no_pivot";
