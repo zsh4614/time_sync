@@ -1,6 +1,6 @@
 # time_sync
 a time synchronizer based ros.
-more information: [blog]()
+more information: [blog](http://zsh4614.cn/ros%E6%97%B6%E9%97%B4%E5%90%8C%E6%AD%A5%E6%9C%BA%E5%88%B6/)
 # quick start
 1.download project and build
 
