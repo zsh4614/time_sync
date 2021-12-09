@@ -35,4 +35,5 @@ rosbag play data.bag
 ```
 
 then you will see:
+
 ![Screenshot from 2021-12-09 15-03-57.png](https://s2.loli.net/2021/12/09/un9ObjVghyLF6l2.png)
